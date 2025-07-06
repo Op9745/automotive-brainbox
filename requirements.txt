@@ -1,0 +1,6 @@
+pytest
+behave
+robotframework
+allure-pytest
+requests
+pandas
