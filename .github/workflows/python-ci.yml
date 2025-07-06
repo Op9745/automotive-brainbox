@@ -1,0 +1,35 @@
+name: ✅ CI Health Check – PyTest + Allure
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧪 Run PyTest and generate Allure results
+        run: |
+          pytest --alluredir=docs/allure-results
+
+      - name: 📤 Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: docs/allure-results
