@@ -1,4 +1,3 @@
-```markdown
 🚗 Automotive Brainbox – ADAS, HIL, Python Automation Portfolio
 
 Welcome to **Automotive Brainbox**, a hands-on learning lab and professional portfolio built to demonstrate real-world capabilities in:
@@ -30,7 +29,6 @@ This project brings together industry-relevant workflows, scripts, and automatio
 📁 Project Structure
 
 ```
-
 automotive-brainbox/
 ├── tests/                 # Unit + BDD + Robot test cases
 ├── automation/            # Log parsers, report generators
@@ -45,7 +43,7 @@ automotive-brainbox/
 ├── .gitignore             # Ignored files
 └── LICENSE                # MIT License
 
-````
+```
 
 ---
 
@@ -60,7 +58,7 @@ pytest --alluredir=docs/allure-results
 
 # (Optional) View Allure Report
 allure serve docs/allure-results
-````
+```
 
 ---
 
@@ -80,11 +78,4 @@ This project is licensed under the [MIT License](LICENSE) — feel free to use a
 
 > Created with ❤️ by Omprakash Jadhav to share and evolve skills in the future of connected, intelligent, and safety-critical automotive systems.
 
-```
-
----
-
-Once you've created your GitHub repository, upload your local project folder, commit this `README.md`, and you’ll be good to go.
-
-Let me know if you'd like help setting up the GitHub repository or writing the first commit/release message.
 ```
