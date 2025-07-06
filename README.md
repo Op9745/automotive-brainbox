@@ -1,5 +1,9 @@
 🚗 Automotive Brainbox – ADAS, HIL, Python Automation Portfolio
 
+[GitHub Workflow Status](https://github.com/Op9745/automotive-brainbox/actions/workflows/python-tests.yml/badge.svg)
+[License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+[Python](https://img.shields.io/badge/python-3.10-blue.svg)
+
 Welcome to **Automotive Brainbox**, a hands-on learning lab and professional portfolio built to demonstrate real-world capabilities in:
 
 - Automotive software development
