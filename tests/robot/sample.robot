@@ -1,1 +1,1 @@
-
+# Placeholder for sample.robot
