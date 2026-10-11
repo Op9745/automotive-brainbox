@@ -10,11 +10,11 @@ from typing import Iterable
 
 
 _TIMESTAMP_RE = re.compile(
-    r"^(?P<timestamp>\\d{4}-\\d{2}-\\d{2}[ T]\\d{2}:\\d{2}:\\d{2}(?:[.,]\\d+)?)"
+    r"^(?P<timestamp>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?)"
 )
 _LEVEL_RE = re.compile(
-    r"^\\s*\\[?(?P<level>DEBUG|INFO|WARN(?:ING)?|ERROR|CRITICAL|FATAL)\\]?"
-    r"\\b\\s*[:|\\-]?\\s*(?P<message>.*)$",
+    r"^\s*\[?(?P<level>DEBUG|INFO|WARN(?:ING)?|ERROR|CRITICAL|FATAL)\]?"
+    r"\b\s*[:|\-]?\s*(?P<message>.*)$",
     re.IGNORECASE,
 )
 
@@ -40,7 +40,7 @@ def parse_log_line(line: str, line_number: int = 1) -> LogEntry | None:
     Supported timestamps begin with YYYY-MM-DD HH:MM:SS or use a T separator.
     A severity token may follow the timestamp or appear at the start of the line.
     """
-    raw = line.rstrip("\\r\\n")
+    raw = line.rstrip("\r\n")
     if not raw.strip():
         return None
 
