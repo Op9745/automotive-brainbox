@@ -4,9 +4,19 @@ on:
   push:
     paths:
       - 'tests/practice_week_01/**'
+      - 'automation/**'
+      - 'utilities/**'
+      - 'requirements.txt'
+      - 'pytest.ini'
+      - '.github/workflows/week01_pytest.yml'
   pull_request:
     paths:
       - 'tests/practice_week_01/**'
+      - 'automation/**'
+      - 'utilities/**'
+      - 'requirements.txt'
+      - 'pytest.ini'
+      - '.github/workflows/week01_pytest.yml'
 
 jobs:
   test:
@@ -23,6 +33,6 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest
+        pip install -r requirements.txt
     - name: Run tests
       run: pytest tests/practice_week_01 --maxfail=2 --disable-warnings -q
