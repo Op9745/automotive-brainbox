@@ -25,7 +25,7 @@ def test_preserve_unstructured_lines_and_ignore_blank_lines(tmp_path):
     assert entry.message == "unexpected diagnostic output"
 
     log_path = tmp_path / "ecu.log"
-    log_path.write_text("INFO startup\\n\\nERROR timeout\\n", encoding="utf-8")
+    log_path.write_text("INFO startup\n\nERROR timeout\n", encoding="utf-8")
     entries = parse_log_file(log_path)
     assert [item.line_number for item in entries] == [1, 3]
     assert summarize_logs(entries) == {
