@@ -14,7 +14,7 @@ _TIMESTAMP_RE = re.compile(
 )
 _LEVEL_RE = re.compile(
     r"^\s*\[?(?P<level>DEBUG|INFO|WARN(?:ING)?|ERROR|CRITICAL|FATAL)\]?"
-    r"\b\s*[:|\-]?\s*(?P<message>.*)$",
+    r"(?:\]|\b)\s*[:|\-]?\s*(?P<message>.*)$",
     re.IGNORECASE,
 )
 
