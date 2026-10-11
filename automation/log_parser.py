@@ -13,7 +13,7 @@ _TIMESTAMP_RE = re.compile(
     r"^(?P<timestamp>\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:[.,]\d+)?)"
 )
 _LEVEL_RE = re.compile(
-    r"^\s*\[?(?P<level>DEBUG|INFO|WARN(?:ING)?|ERROR|CRITICAL|FATAL)\]?"
+    r"^\s*\[?(?P<level>DEBUG|INFO|WARN(?:ING)?|ERROR|CRITICAL|FATAL)"
     r"(?:\]|\b)\s*[:|\-]?\s*(?P<message>.*)$",
     re.IGNORECASE,
 )
