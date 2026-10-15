@@ -54,15 +54,17 @@ def extract_raw_value(payload: bytes | bytearray | Sequence[int], definition: Si
             raise ValueError("signal extends beyond payload")
         raw = (int.from_bytes(data, "little") >> definition.start_bit) & ((1 << definition.length) - 1)
     else:
-        if definition.start_bit + definition.length > len(data) * 8:
-            raise ValueError("signal extends beyond payload")
-        # DBC Motorola start bits use sawtooth numbering: bit 0 is the
-        # byte's MSB and bit 7 its LSB. Increasing the DBC position crosses
-        # from one byte's LSB to the next byte's MSB.
+        # DBC Motorola start bits are numbered LSB0, but the start bit
+        # identifies the signal MSB. Traverse down to bit 0, then jump to
+        # bit 7 of the next byte (the DBC sawtooth convention).
+        position = definition.start_bit
         raw = 0
-        for position in range(definition.start_bit, definition.start_bit + definition.length):
+        for _ in range(definition.length):
             byte_index, bit_in_byte = divmod(position, 8)
-            raw = (raw << 1) | ((data[byte_index] >> (7 - bit_in_byte)) & 1)
+            if byte_index >= len(data):
+                raise ValueError("signal extends beyond payload")
+            raw = (raw << 1) | ((data[byte_index] >> bit_in_byte) & 1)
+            position = position + 15 if bit_in_byte == 0 else position - 1
     if definition.signed and raw & (1 << (definition.length - 1)):
         raw -= 1 << definition.length
     return raw
