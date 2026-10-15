@@ -13,6 +13,26 @@ def test_decode_big_endian_dbc_sawtooth_nibble():
     assert extract_raw_value(bytes([0xA0]), definition) == 10
 
 
+@pytest.mark.parametrize(
+    ("payload", "start_bit", "length", "expected"),
+    [
+        # DBC bit 7 is byte 0's LSB; bit 8 is byte 1's MSB.
+        (bytes([0x01, 0x80]), 7, 2, 0b11),
+        # Start at byte 0 bit 1 (DBC index 6), then cross into byte 1.
+        (bytes([0x00, 0xA0]), 6, 4, 0b0010),
+        # A 12-bit signal crossing the byte boundary.
+        (bytes([0x05, 0xA0]), 4, 8, 0b01011010),
+    ],
+)
+def test_decode_big_endian_dbc_sawtooth_across_byte_boundary(
+    payload, start_bit, length, expected
+):
+    definition = SignalDefinition(
+        "CrossByte", start_bit, length, byte_order="big"
+    )
+    assert extract_raw_value(payload, definition) == expected
+
+
 def test_decode_signed_twos_complement():
     assert extract_raw_value(bytes([0xFE]), SignalDefinition("Offset", 0, 8, signed=True)) == -2
 
