@@ -49,15 +49,22 @@ def _validate_payload(payload: bytes | bytearray | Sequence[int]) -> bytes:
 def extract_raw_value(payload: bytes | bytearray | Sequence[int], definition: SignalDefinition) -> int:
     """Extract a raw integer. Little-endian starts at LSB bit index; big-endian uses DBC sawtooth numbering."""
     data = _validate_payload(payload)
-    if definition.start_bit + definition.length > len(data) * 8:
-        raise ValueError("signal extends beyond payload")
     if definition.byte_order == "little":
+        if definition.start_bit + definition.length > len(data) * 8:
+            raise ValueError("signal extends beyond payload")
         raw = (int.from_bytes(data, "little") >> definition.start_bit) & ((1 << definition.length) - 1)
     else:
+        # DBC Motorola start bits use sawtooth numbering: within a byte,
+        # traversal moves from the selected bit toward bit 0. After bit 0,
+        # continue at bit 7 of the next byte (position += 15).
+        position = definition.start_bit
         raw = 0
-        for position in range(definition.start_bit, definition.start_bit + definition.length):
+        for _ in range(definition.length):
             byte_index, bit_in_byte = divmod(position, 8)
-            raw = (raw << 1) | ((data[byte_index] >> (7 - bit_in_byte)) & 1)
+            if byte_index >= len(data):
+                raise ValueError("signal extends beyond payload")
+            raw = (raw << 1) | ((data[byte_index] >> bit_in_byte) & 1)
+            position = position + 15 if bit_in_byte == 0 else position - 1
     if definition.signed and raw & (1 << (definition.length - 1)):
         raw -= 1 << definition.length
     return raw
