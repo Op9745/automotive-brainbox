@@ -16,12 +16,12 @@ def test_decode_big_endian_dbc_sawtooth_nibble():
 @pytest.mark.parametrize(
     ("payload", "start_bit", "length", "expected"),
     [
-        # Motorola/DBC start bit 7 is byte 0's MSB; traversal continues down
+        # DBC start bit 7 identifies byte 0's MSB; traversal continues down
         # to bit 0, then jumps to bit 7 of byte 1.
         (bytes([0xA5, 0x80]), 7, 9, 0b101001011),
         (bytes([0x80, 0x40]), 7, 10, 0b1000000001),
-        # Start at byte 0's LSB, then continue at byte 1's MSB.
-        (bytes([0x01, 0x80]), 7, 2, 0b11),
+        # Start at byte 0's LSB (DBC bit 0), then continue at byte 1's MSB.
+        (bytes([0x01, 0x80]), 0, 2, 0b11),
     ],
 )
 def test_decode_big_endian_dbc_sawtooth_across_byte_boundary(
