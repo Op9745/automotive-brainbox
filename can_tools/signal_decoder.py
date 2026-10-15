@@ -56,9 +56,9 @@ def extract_raw_value(payload: bytes | bytearray | Sequence[int], definition: Si
     else:
         if definition.start_bit + definition.length > len(data) * 8:
             raise ValueError("signal extends beyond payload")
-        # DBC Motorola start-bit numbering is sawtooth: bit 0 is the MSB
-        # of byte 0 and bit 7 is its LSB. Consecutive positions therefore
-        # move toward the LSB, then continue at the next byte's MSB.
+        # DBC Motorola start bits use sawtooth numbering: bit 0 is the
+        # byte's MSB and bit 7 its LSB. Increasing the DBC position crosses
+        # from one byte's LSB to the next byte's MSB.
         raw = 0
         for position in range(definition.start_bit, definition.start_bit + definition.length):
             byte_index, bit_in_byte = divmod(position, 8)
