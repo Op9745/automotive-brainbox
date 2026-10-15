@@ -9,19 +9,19 @@ def test_decode_little_endian_scaled_speed():
 
 
 def test_decode_big_endian_dbc_sawtooth_nibble():
-    definition = SignalDefinition("Nibble", 0, 4, byte_order="big")
+    definition = SignalDefinition("Nibble", 7, 4, byte_order="big")
     assert extract_raw_value(bytes([0xA0]), definition) == 10
 
 
 @pytest.mark.parametrize(
     ("payload", "start_bit", "length", "expected"),
     [
-        # DBC bit 7 is byte 0's LSB; bit 8 is byte 1's MSB.
-        (bytes([0x01, 0x80]), 7, 2, 0b11),
-        # Start at byte 0 bit 1 (DBC index 6), then cross into byte 1.
-        (bytes([0x00, 0xA0]), 6, 4, 0b0010),
-        # A 12-bit signal crossing the byte boundary.
-        (bytes([0x05, 0xA0]), 4, 8, 0b01011010),
+        # Motorola/DBC start bit 7 is byte 0's MSB; traversal continues down
+        # to bit 0, then jumps to bit 7 of byte 1.
+        (bytes([0xA5, 0x80]), 7, 9, 0b101001011),
+        (bytes([0x80, 0x40]), 7, 10, 0b1000000001),
+        # Starting at byte 0 bit 1 (DBC start bit 1), cross at bit 0 to byte 1 bit 7.
+        (bytes([0x02, 0x80]), 1, 2, 0b11),
     ],
 )
 def test_decode_big_endian_dbc_sawtooth_across_byte_boundary(
